@@ -1,5 +1,7 @@
 import * as THREE from 'three';
 import * as dat from 'dat.gui';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls' 
+
 
 const gui = new dat.GUI()
 const world = {
@@ -42,15 +44,22 @@ gui.add(world.plane, 'heightSegments', 1, 20)
     .onChange(generatePlane)
 
 
-
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, innerWidth / innerHeight, 0.1, 1000);
+const camera = new THREE.PerspectiveCamera(
+    75, 
+    innerWidth / innerHeight, 
+    0.1, 
+    1000);
 
 const renderer = new THREE.WebGLRenderer()
 renderer.setSize(innerWidth, innerHeight);
 renderer.setPixelRatio(devicePixelRatio);
 
 document.body.appendChild(renderer.domElement);
+
+
+const controls = new OrbitControls( camera, renderer.domElement );
+
 
 camera.position.z = 5
 
@@ -83,8 +92,12 @@ const light = new THREE.DirectionalLight(
 light.position.set(0, 0, 1)
 scene.add(light)
 
+
+
 function animate() {
     requestAnimationFrame(animate)
+    controls.update();
+
     renderer.render(scene, camera)
 
     /*    planeMesh.rotation.x += 0.01*/
