@@ -94,7 +94,7 @@
       "oF" : 0
     },
     "\/source\/js\/script.js" : {
-      "bF" : 0,
+      "bF" : 4,
       "ft" : 64,
       "ma" : 3,
       "mi" : 1,
@@ -128,7 +128,7 @@
     "displayValueWasSetByUser" : 0,
     "iconImageName" : "logo-wordpress",
     "iconImageWasSetByUser" : 0,
-    "lastBuiltDate" : 675087732.70208204
+    "lastBuiltDate" : 675092799.03427196
   },
   "projectSettings" : {
     "abortBuildOnError" : 1,
