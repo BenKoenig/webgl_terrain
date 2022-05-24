@@ -5,23 +5,43 @@ const gui = new dat.GUI()
 const world = {
     plane: {
         width: 10,
-        height: 10
+        height: 10,
+        widthSegments: 10,
+        heightSegments: 10
     }
 }
-gui.add(world.plane, 'width', 1, 500)
-    .onChange(() => {
-        planeMesh.geometry.dispose()
-        planeMesh.geometry =  new THREE.PlaneGeometry(world.plane.width, world.plane.height, 10, 10);
 
-        const { array } = planeMesh.geometry.attributes.position;
-        for (let i = 0; i < array.length; i += 3) {
-            const x  = array[i];
-            const y  = array[i + 1 ];
-            const z  = array[i + 2 ];
+function generatePlane() {
+    planeMesh.geometry.dispose()
+    planeMesh.geometry = new THREE.PlaneGeometry(
+        world.plane.width,
+        world.plane.height,
+        world.plane.widthSegments,
+        world.plane.heightSegments);
 
-            array[i + 2] = z + Math.random()
-        }
-    })
+    const {array} = planeMesh.geometry.attributes.position;
+    for (let i = 0; i < array.length; i += 3) {
+        const x = array[i];
+        const y = array[i + 1];
+        const z = array[i + 2];
+
+        array[i + 2] = z + Math.random()
+    }
+}
+
+gui.add(world.plane, 'width', 1, 20)
+    .onChange(generatePlane)
+
+gui.add(world.plane, 'height', 1, 20)
+    .onChange(generatePlane)
+
+gui.add(world.plane, 'widthSegments', 1, 20)
+    .onChange(generatePlane)
+
+gui.add(world.plane, 'heightSegments', 1, 20)
+    .onChange(generatePlane)
+
+
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, innerWidth / innerHeight, 0.1, 1000);
@@ -30,7 +50,7 @@ const renderer = new THREE.WebGLRenderer()
 renderer.setSize(innerWidth, innerHeight);
 renderer.setPixelRatio(devicePixelRatio);
 
-document.body.appendChild( renderer.domElement );
+document.body.appendChild(renderer.domElement);
 
 camera.position.z = 5
 
@@ -40,17 +60,17 @@ const planeMaterial = new THREE.MeshPhongMaterial({
     side: THREE.DoubleSide,
     flatShading: THREE.FlatShading
 })
-const planeMesh =   new THREE.Mesh(
+const planeMesh = new THREE.Mesh(
     planeGeometry, planeMaterial)
- scene.add(planeMesh)
+scene.add(planeMesh)
 
-const { array } = planeMesh.geometry.attributes.position;
+const {array} = planeMesh.geometry.attributes.position;
 
 
 for (let i = 0; i < array.length; i += 3) {
-    const x  = array[i];
-    const y  = array[i + 1 ];
-    const z  = array[i + 2 ];
+    const x = array[i];
+    const y = array[i + 1];
+    const z = array[i + 2];
 
     array[i + 2] = z + Math.random()
 }
@@ -67,6 +87,7 @@ function animate() {
     requestAnimationFrame(animate)
     renderer.render(scene, camera)
 
-/*    planeMesh.rotation.x += 0.01*/
+    /*    planeMesh.rotation.x += 0.01*/
 }
+
 animate()
