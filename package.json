@@ -1,10 +1,10 @@
 {
-  "name": "codekit-project",
+  "name": "webgl_experimental",
   "version": "1.0.0",
-  "description": "CodeKit created this starter package.json file. You should customize it appropriately. (If you intend to publish this project on npm, add an entry in the 'repository' field and remove the 'private' attribute, below.)",
+  "description": "WebGL Experimental Repository (using Three.js)",
   "scripts": {},
-  "author": "",
-  "license": "UNLICENSED",
+  "author": "Benjamin Koenig",
+  "license": "MIT",
   "repository": {},
   "private": true,
   "dependencies": {

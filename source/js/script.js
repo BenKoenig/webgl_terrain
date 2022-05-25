@@ -43,7 +43,7 @@ gui.add(world.plane, 'widthSegments', 1, 20)
 gui.add(world.plane, 'heightSegments', 1, 20)
     .onChange(generatePlane)
 
-
+const raycaster = new THREE.Raycaster()
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
     75, 
@@ -67,7 +67,8 @@ const planeGeometry = new THREE.PlaneGeometry(5, 5, 10, 10);
 const planeMaterial = new THREE.MeshPhongMaterial({
     color: 0xff0000,
     side: THREE.DoubleSide,
-    flatShading: THREE.FlatShading
+    flatShading: THREE.FlatShading,
+    vertexColors: true;
 })
 const planeMesh = new THREE.Mesh(
     planeGeometry, planeMaterial)
@@ -84,15 +85,23 @@ for (let i = 0; i < array.length; i += 3) {
     array[i + 2] = z + Math.random()
 }
 
+planeMesh.geometry.setAttribute('color',
+    new THREE.BufferAttribute(new Float32Array([0, 0, 1]), 3))
 
-const light = new THREE.DirectionalLight(
-    0xffffff, 1
-)
 
+const light = new THREE.DirectionalLight(0xffffff, 1)
 light.position.set(0, 0, 1)
 scene.add(light)
 
+const backLight = new THREE.DirectionalLight(0xffffff, 1)
+backLight.position.set(0, 0, -1)
+scene.add(backLight)
 
+
+const mouse = {
+    x: undefined,
+    y: undefined
+}
 
 function animate() {
     requestAnimationFrame(animate)
@@ -100,7 +109,20 @@ function animate() {
 
     renderer.render(scene, camera)
 
+    raycaster.setFromCamera(mouse, camera)
+    const intersects = raycaster.intersectObject(planeMesh)
+
+
+
+
     /*    planeMesh.rotation.x += 0.01*/
 }
 
 animate()
+
+
+
+addEventListener('mousemove', (e) => {
+    mouse.x = (e.clientX / innerWidth) * 2 - 1
+    mouse.y = -(e.clientY / innerHeight) * 2 + 1
+})
